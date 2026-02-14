@@ -287,12 +287,12 @@ function setupPhotoGallery() {
     const photoFrames = document.querySelectorAll('.photo-frame');
     const photoModal = document.getElementById('photoModal');
     const modalImage = document.getElementById('modalImage');
-    const modalClose = document.getElementById('modalClose');
-    const modalBackdrop = document.querySelector('.modal-backdrop');
+    const modalContent = document.querySelector('.modal-content-ios');
     
-    // Click photo to zoom
+    // Click photo to zoom (iOS style)
     photoFrames.forEach(frame => {
-        frame.addEventListener('click', function() {
+        frame.addEventListener('click', function(e) {
+            e.stopPropagation();
             const img = this.querySelector('img');
             modalImage.src = img.src;
             photoModal.classList.add('active');
@@ -300,14 +300,20 @@ function setupPhotoGallery() {
         });
     });
     
-    // Close modal
+    // Close modal - iOS style (click anywhere)
     function closeModal() {
         photoModal.classList.remove('active');
         document.body.style.overflow = '';
     }
     
-    modalClose.addEventListener('click', closeModal);
-    modalBackdrop.addEventListener('click', closeModal);
+    // Click anywhere to close (iOS behavior)
+    photoModal.addEventListener('click', closeModal);
+    
+    // Prevent closing when clicking the image itself (optional)
+    modalContent.addEventListener('click', function(e) {
+        e.stopPropagation();
+        closeModal(); // Still close even on image click for simpler UX
+    });
     
     // Close with Escape key
     document.addEventListener('keydown', (e) => {
