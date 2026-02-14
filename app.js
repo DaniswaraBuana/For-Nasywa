@@ -225,6 +225,7 @@ window.addEventListener('DOMContentLoaded', function() {
     setupNavigation();
     setupFlowerInteraction();
     setupMusicPlayer();
+    setupPhotoGallery();
     updateUI();
 });
 
@@ -280,6 +281,40 @@ function setupFlowerInteraction() {
         
         console.log('Flower hover interaction ready');
     }
+}
+
+function setupPhotoGallery() {
+    const photoFrames = document.querySelectorAll('.photo-frame');
+    const photoModal = document.getElementById('photoModal');
+    const modalImage = document.getElementById('modalImage');
+    const modalClose = document.getElementById('modalClose');
+    const modalBackdrop = document.querySelector('.modal-backdrop');
+    
+    // Click photo to zoom
+    photoFrames.forEach(frame => {
+        frame.addEventListener('click', function() {
+            const img = this.querySelector('img');
+            modalImage.src = img.src;
+            photoModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        });
+    });
+    
+    // Close modal
+    function closeModal() {
+        photoModal.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+    
+    modalClose.addEventListener('click', closeModal);
+    modalBackdrop.addEventListener('click', closeModal);
+    
+    // Close with Escape key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && photoModal.classList.contains('active')) {
+            closeModal();
+        }
+    });
 }
 
 function setupNavigation() {
