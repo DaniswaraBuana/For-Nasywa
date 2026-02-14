@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>For Nasywa</title>
+</head>
+<body>
+    <div class="night"></div>
+    
+    <div class="page active" id="page1">
+        <div class="content">
+            <h1 class="title">For Nasywa</h1>
+            <p class="text">Ada sesuatu yang ingin aku sampaikan...</p>
+        </div>
+    </div>
+
+    <div class="page" id="page2">
+        <div class="content">
+            <h2 class="subtitle">Maaf ya sayangku...</h2>
+            <p class="text">maaf yaa… aku telat ngomong ini<br><br>
+            bukan karena aku gak kepikiran kamu, justru karena kamu kepikiran terus sampe aku ngerasa harus nyari kata yang pas dan malah jadi kesiangan<br><br>
+            perasaanku ke kamu gak pernah telat kok, cuma aku aja yang kadang kurang peka sama waktunya<br><br>
+            jadi… maafin aku ya<br>
+            aku lagi belajar biar gak telat lagi buat hal yang penting kamu 🥺</p>
+        </div>
+    </div>
+
+    <div class="page page-with-flowers" id="page3">
+        <div id="flowers-container" class="clickable-flowers"></div>
+        <div class="content valentine-box hidden" id="valentine-text">
+            <h2 class="subtitle valentine-title">Happy Valentine's Day! 💕</h2>
+            <p class="text valentine-message">
+                walaupun aku telat nyampeinnya…<br>
+                tapi rasa sayangku ke kamu gak pernah telat sedikit pun
+            </p>
+            <p class="text valentine-message">
+                makasih ya udah jadi bagian paling penting di hidupku
+            </p>
+            <p class="text valentine-message">
+                yang selalu aku cari, aku pikirin,<br>
+                dan bikin hariku kerasa lebih ringan
+            </p>
+            <p class="text valentine-message">
+                kamu itu alasan aku bisa senyum tiap hari
+            </p>
+            <p class="text valentine-message">
+                <span class="love-text">i love you, nasywa sayangku semestaku ❤️</span>
+            </p>
+        </div>
+        <div class="click-hint" id="click-hint">✨ Hover ke bunganya ✨</div>
+    </div>
+
+    <div class="page page-with-flowers" id="page4">
+        <div class="flower-header">
+            <h2 class="subtitle">Bunga Untukmu 🌸</h2>
+            <p class="small-text">Dari hatiku untuk Nasywa tersayang...</p>
+        </div>
+        <div id="flowers-container-2"></div>
+    </div>
+
+    <div class="navigation">
+        <button class="nav-btn" id="prevBtn">← Back</button>
+        <div class="dots">
+            <span class="dot active" data-page="1"></span>
+            <span class="dot" data-page="2"></span>
+            <span class="dot" data-page="3"></span>
+            <span class="dot" data-page="4"></span>
+        </div>
+        <button class="nav-btn" id="nextBtn">Next →</button>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
