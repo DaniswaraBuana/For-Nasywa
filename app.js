@@ -1,6 +1,6 @@
 // State
 let currentPage = 1;
-const totalPages = 4;
+const totalPages = 5;
 
 // Flower HTML template
 const flowersHTML = `
