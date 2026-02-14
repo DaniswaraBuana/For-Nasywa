@@ -19,6 +19,44 @@ body {
   justify-content: center;
 }
 
+/* Music Toggle Button */
+.music-toggle {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  width: 50px;
+  height: 50px;
+  background: rgba(255, 182, 193, 0.2);
+  border: 2px solid rgba(255, 182, 193, 0.5);
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.music-toggle:hover {
+  background: rgba(255, 182, 193, 0.3);
+  border-color: rgba(255, 182, 193, 0.8);
+  transform: scale(1.1);
+}
+
+.music-toggle svg {
+  color: #ffb6c1;
+  transition: all 0.3s ease;
+}
+
+.music-toggle.muted svg {
+  color: rgba(255, 182, 193, 0.5);
+}
+
+.music-toggle.muted #soundWaves {
+  opacity: 0;
+}
+
 /* Page System */
 .page {
   position: fixed;

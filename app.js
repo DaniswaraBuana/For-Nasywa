@@ -224,8 +224,41 @@ window.addEventListener('DOMContentLoaded', function() {
     // Setup navigation
     setupNavigation();
     setupFlowerInteraction();
+    setupMusicPlayer();
     updateUI();
 });
+
+function setupMusicPlayer() {
+    const music = document.getElementById('bgMusic');
+    const musicToggle = document.getElementById('musicToggle');
+    let isMuted = true;
+    
+    // Start music muted by default
+    music.volume = 0.5; // 50% volume
+    music.muted = true;
+    musicToggle.classList.add('muted');
+    
+    // Toggle music on button click
+    musicToggle.addEventListener('click', function() {
+        if (isMuted) {
+            music.muted = false;
+            music.play();
+            musicToggle.classList.remove('muted');
+            isMuted = false;
+        } else {
+            music.muted = true;
+            musicToggle.classList.add('muted');
+            isMuted = true;
+        }
+    });
+    
+    // Auto play attempt (might be blocked by browser)
+    setTimeout(() => {
+        music.play().catch(err => {
+            console.log('Autoplay blocked. Click the music button to play.');
+        });
+    }, 1000);
+}
 
 function setupFlowerInteraction() {
     const flowersContainer = document.getElementById('flowers-container');
