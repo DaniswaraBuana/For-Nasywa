@@ -226,8 +226,51 @@ window.addEventListener('DOMContentLoaded', function() {
     setupFlowerInteraction();
     setupMusicPlayer();
     setupPhotoGallery();
+    setupFloatingHearts();
     updateUI();
 });
+
+function setupFloatingHearts() {
+    const pages = ['page2', 'page3', 'page4', 'page5', 'page6'];
+    
+    pages.forEach(pageId => {
+        const heartsContainer = document.getElementById(`hearts-${pageId}`);
+        if (heartsContainer) {
+            // Create hearts periodically
+            setInterval(() => {
+                createHeart(heartsContainer);
+            }, 800); // New heart every 800ms
+        }
+    });
+}
+
+function createHeart(container) {
+    const heart = document.createElement('div');
+    heart.className = 'heart';
+    
+    // Random horizontal position
+    const leftPos = Math.random() * 100;
+    heart.style.left = leftPos + '%';
+    
+    // Random horizontal drift
+    const floatX = (Math.random() - 0.5) * 200; // -100px to 100px
+    const rotate = (Math.random() - 0.5) * 360; // -180deg to 180deg
+    
+    heart.style.setProperty('--float-x', `${floatX}px`);
+    heart.style.setProperty('--rotate', `${rotate}deg`);
+    
+    // Random beat animation (30% chance)
+    if (Math.random() > 0.7) {
+        heart.classList.add('beat');
+    }
+    
+    container.appendChild(heart);
+    
+    // Remove heart after animation completes
+    setTimeout(() => {
+        heart.remove();
+    }, 12000); // Max animation duration
+}
 
 function setupMusicPlayer() {
     const music = document.getElementById('bgMusic');
