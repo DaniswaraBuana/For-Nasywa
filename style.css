@@ -578,6 +578,68 @@ body {
   animation-delay: 1.1s;
 }
 
+/* Majesty Ambience Effects */
+.photo-frame::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255, 182, 193, 0.15) 0%, transparent 70%);
+  opacity: 0;
+  transition: opacity 0.6s ease;
+  pointer-events: none;
+  animation: ambiencePulse 3s ease-in-out infinite;
+}
+
+.photo-frame:hover::after {
+  opacity: 1;
+}
+
+/* Popping Glow Effect */
+.photo-wrapper::after {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  background: linear-gradient(45deg, 
+    rgba(255, 105, 180, 0.3), 
+    rgba(255, 182, 193, 0.3), 
+    rgba(255, 20, 147, 0.3),
+    rgba(255, 182, 193, 0.3)
+  );
+  border-radius: 10px;
+  opacity: 0;
+  filter: blur(15px);
+  transition: opacity 0.4s ease;
+  z-index: -1;
+}
+
+.photo-frame:hover .photo-wrapper::after {
+  opacity: 1;
+  animation: glowPop 1.5s ease-in-out infinite;
+}
+
+@keyframes ambiencePulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.3;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.6;
+  }
+}
+
+@keyframes glowPop {
+  0%, 100% {
+    filter: blur(15px) brightness(1);
+  }
+  50% {
+    filter: blur(20px) brightness(1.3);
+  }
+}
+
 .photo-wrapper {
   position: relative;
   width: 100%;
@@ -654,6 +716,162 @@ body {
 
 .modal-content-ios:active img {
   transform: scale(0.98);
+}
+
+/* Video Gallery */
+.video-content {
+  padding: 80px 40px 120px 40px;
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+.video-title {
+  margin-bottom: 60px;
+  text-align: center;
+  font-size: clamp(2rem, 5vw, 3rem) !important;
+}
+
+.video-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  opacity: 0;
+  transform: translateY(30px);
+  animation: videoFadeIn 0.8s ease-out 0.3s forwards;
+}
+
+.video-frame {
+  position: relative;
+  background: linear-gradient(135deg, rgba(255, 182, 193, 0.08), rgba(255, 105, 180, 0.08));
+  border: 2px solid rgba(255, 182, 193, 0.25);
+  border-radius: 20px;
+  padding: 15px;
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.3),
+    0 0 60px rgba(255, 182, 193, 0.2);
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: visible;
+}
+
+.video-frame:hover {
+  transform: translateY(-8px);
+  border-color: rgba(255, 182, 193, 0.5);
+  box-shadow: 
+    0 20px 60px rgba(255, 105, 180, 0.4),
+    0 0 80px rgba(255, 182, 193, 0.3);
+  background: linear-gradient(135deg, rgba(255, 182, 193, 0.15), rgba(255, 105, 180, 0.15));
+}
+
+/* Video Majesty Ambience */
+.video-frame::before {
+  content: '';
+  position: absolute;
+  inset: -100px;
+  background: radial-gradient(circle, rgba(255, 182, 193, 0.2) 0%, transparent 60%);
+  opacity: 0;
+  transition: opacity 0.6s ease;
+  pointer-events: none;
+  animation: videoAmbiencePulse 4s ease-in-out infinite;
+}
+
+.video-frame:hover::before {
+  opacity: 1;
+}
+
+/* Video Popping Glow */
+.video-frame::after {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  background: linear-gradient(135deg, 
+    rgba(255, 105, 180, 0.4), 
+    rgba(255, 182, 193, 0.4), 
+    rgba(255, 20, 147, 0.4),
+    rgba(255, 182, 193, 0.4),
+    rgba(255, 105, 180, 0.4)
+  );
+  background-size: 200% 200%;
+  border-radius: 20px;
+  opacity: 0;
+  filter: blur(25px);
+  transition: opacity 0.5s ease;
+  z-index: -1;
+  animation: gradientShift 3s ease infinite;
+}
+
+.video-frame:hover::after {
+  opacity: 1;
+}
+
+video {
+  width: 100%;
+  max-width: 1000px;
+  height: auto;
+  max-height: 600px;
+  display: block;
+  border-radius: 15px;
+  background: #000;
+  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+video::-webkit-media-controls-panel {
+  background: linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.7));
+}
+
+@keyframes videoFadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes videoAmbiencePulse {
+  0%, 100% {
+    transform: scale(1) rotate(0deg);
+    opacity: 0.4;
+  }
+  50% {
+    transform: scale(1.15) rotate(5deg);
+    opacity: 0.7;
+  }
+}
+
+@keyframes gradientShift {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+@media (max-width: 768px) {
+  .video-content {
+    padding: 60px 20px 100px 20px;
+  }
+  
+  .video-title {
+    margin-bottom: 40px;
+  }
+  
+  .video-frame {
+    padding: 10px;
+  }
+  
+  video {
+    max-height: 400px;
+  }
 }
 
 @keyframes photoSlideIn {
