@@ -745,7 +745,7 @@ body {
   justify-content: center;
   align-items: center;
   width: 100%;
-  max-width: 900px;
+  max-width: 700px;
   margin: 0 auto 50px auto;
   opacity: 0;
   transform: translateY(30px);
@@ -755,7 +755,7 @@ body {
 .video-frame {
   position: relative;
   width: 100%;
-  max-width: 850px;
+  max-width: 650px;
   background: linear-gradient(135deg, rgba(255, 182, 193, 0.08), rgba(255, 105, 180, 0.08));
   border: 2px solid rgba(255, 182, 193, 0.25);
   border-radius: 20px;
@@ -820,8 +820,8 @@ body {
 video {
   width: 100%;
   height: auto;
-  min-height: 400px;
-  max-height: 500px;
+  min-height: 350px;
+  max-height: 450px;
   display: block;
   border-radius: 15px;
   background: #000;
