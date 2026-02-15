@@ -362,11 +362,32 @@ function goToPage(pageNum) {
     // Remove active from current page
     document.getElementById(`page${currentPage}`).classList.remove('active');
     
+    // Pause video if leaving page 6
+    if (currentPage === 6) {
+        const video = document.getElementById('memoryVideo');
+        if (video) {
+            video.pause();
+        }
+    }
+    
     // Update current page
     currentPage = pageNum;
     
     // Add active to new page
     document.getElementById(`page${currentPage}`).classList.add('active');
+    
+    // Autoplay video if entering page 6
+    if (currentPage === 6) {
+        const video = document.getElementById('memoryVideo');
+        if (video) {
+            // Small delay to ensure page transition completes
+            setTimeout(() => {
+                video.play().catch(err => {
+                    console.log('Video autoplay blocked by browser');
+                });
+            }, 300);
+        }
+    }
     
     // Update UI
     updateUI();
