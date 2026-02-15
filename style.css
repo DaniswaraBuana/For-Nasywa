@@ -968,9 +968,10 @@ video::-webkit-media-controls-volume-slider {
   height: 30px;
   opacity: 0;
   animation: floatUp linear forwards;
-  background: linear-gradient(135deg, rgba(255, 105, 180, 0.35), rgba(255, 20, 147, 0.25));
+  background: linear-gradient(135deg, rgba(255, 105, 180, 0.5), rgba(255, 20, 147, 0.4));
   transform: rotate(45deg);
-  filter: blur(0.5px);
+  filter: blur(0px);
+  box-shadow: 0 0 15px rgba(255, 105, 180, 0.3);
 }
 
 .heart::before,
@@ -979,7 +980,7 @@ video::-webkit-media-controls-volume-slider {
   position: absolute;
   width: 30px;
   height: 30px;
-  background: linear-gradient(135deg, rgba(255, 105, 180, 0.35), rgba(255, 20, 147, 0.25));
+  background: linear-gradient(135deg, rgba(255, 105, 180, 0.5), rgba(255, 20, 147, 0.4));
   border-radius: 50%;
 }
 
@@ -1052,26 +1053,26 @@ video::-webkit-media-controls-volume-slider {
   0% {
     bottom: -50px;
     opacity: 0;
-    transform: translateX(0) rotate(45deg) scale(0.5);
-    filter: blur(1px);
+    transform: translateX(0) rotate(45deg) scale(0.8);
+    filter: blur(0px);
   }
-  10% {
-    opacity: 0.5;
-    filter: blur(2px);
+  5% {
+    opacity: 0.6;
+    filter: blur(0px);
   }
   50% {
-    opacity: 0.4;
-    filter: blur(3px);
+    opacity: 0.5;
+    filter: blur(0.5px);
   }
   80% {
-    opacity: 0.25;
-    filter: blur(4px);
+    opacity: 0.3;
+    filter: blur(1px);
   }
   100% {
     bottom: 110vh;
     opacity: 0;
-    transform: translateX(var(--float-x)) rotate(calc(45deg + var(--rotate))) scale(0.8);
-    filter: blur(5px);
+    transform: translateX(var(--float-x)) rotate(calc(45deg + var(--rotate))) scale(1);
+    filter: blur(1.5px);
   }
 }
 

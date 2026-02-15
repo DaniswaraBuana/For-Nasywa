@@ -239,7 +239,7 @@ function setupFloatingHearts() {
             // Create hearts periodically
             setInterval(() => {
                 createHeart(heartsContainer);
-            }, 800); // New heart every 800ms
+            }, 1200); // New heart every 1.2 seconds for smoother effect
         }
     });
 }
