@@ -182,7 +182,7 @@ class GalaxySceneSetup extends THREE.Scene {
 
     setScene() {
         this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 100);
-        this.camera.position.set(3, 3, 3);
+        this.camera.position.set(2, 1.8, 2);   // zoomed in closer to galaxy
 
         this.setRenderer();
         this.setControls();
