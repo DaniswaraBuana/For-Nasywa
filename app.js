@@ -432,13 +432,11 @@ function goToPage(pageNum) {
         }
     }
     
-    // Initialize galaxy particles if entering page 7
+    // Initialize galaxy if entering page 7
     if (currentPage === 7) {
-        // Use Three.js galaxy instead of particles.js
         if (typeof initGalaxy === 'function') {
             initGalaxy();
         }
-        setupTwinklingStars();
     }
     
     // Update UI
@@ -460,22 +458,3 @@ function updateUI() {
         dot.classList.toggle('active', page === currentPage);
     });
 }
-
-function setupTwinklingStars() {
-    const overlay = document.getElementById('starsOverlay');
-    if (!overlay) return;
-    // Clear existing stars if any
-    overlay.innerHTML = '';
-    const count = 120;
-    for (let i = 0; i < count; i++) {
-        const star = document.createElement('span');
-        star.className = 'star';
-        star.style.setProperty('--size',  (Math.random() * 2.5 + 0.5).toFixed(1) + 'px');
-        star.style.setProperty('--top',   (Math.random() * 100).toFixed(1) + '%');
-        star.style.setProperty('--left',  (Math.random() * 100).toFixed(1) + '%');
-        star.style.setProperty('--dur',   (Math.random() * 3 + 1.5).toFixed(1) + 's');
-        star.style.setProperty('--delay', (Math.random() * 4).toFixed(1) + 's');
-        overlay.appendChild(star);
-    }
-}
-
