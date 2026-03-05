@@ -1,5 +1,11 @@
 // Three.js Galaxy Animation
-// Based on https://github.com/sboez/Galaxy
+// Based on https://github.com/sboez/Galaxy (MIT License)
+// 
+// Integration Notes:
+// - Shaders copied from src/shaders/vertex.glsl and src/shaders/fragment.glsl
+// - Original uses webpack + imports, this version uses inline shaders for CDN compatibility
+// - Original files in src/ folder are reference only (not used in build)
+// - All galaxy logic consolidated in this file for simplicity
 
 class GalaxyScene {
     constructor() {
@@ -83,6 +89,7 @@ class GalaxyScene {
         const positions = new Float32Array(this.parameters.count * 3);
         const colors = new Float32Array(this.parameters.count * 3);
         const scales = new Float32Array(this.parameters.count);
+        const randomness = new Float32Array(this.parameters.count * 3);
 
         const colorInside = new THREE.Color(this.parameters.insideColor);
         const colorOutside = new THREE.Color(this.parameters.outsideColor);
@@ -99,9 +106,13 @@ class GalaxyScene {
             const randomY = Math.pow(Math.random(), this.parameters.randomnessPower) * (Math.random() < 0.5 ? 1 : -1) * this.parameters.randomness * radius;
             const randomZ = Math.pow(Math.random(), this.parameters.randomnessPower) * (Math.random() < 0.5 ? 1 : -1) * this.parameters.randomness * radius;
 
-            positions[i3] = Math.cos(branchAngle + spinAngle) * radius + randomX;
-            positions[i3 + 1] = randomY;
-            positions[i3 + 2] = Math.sin(branchAngle + spinAngle) * radius + randomZ;
+            positions[i3] = Math.cos(branchAngle + spinAngle) * radius;
+            positions[i3 + 1] = 0;
+            positions[i3 + 2] = Math.sin(branchAngle + spinAngle) * radius;
+
+            randomness[i3] = randomX;
+            randomness[i3 + 1] = randomY;
+            randomness[i3 + 2] = randomZ;
 
             // Color
             const mixedColor = colorInside.clone();
@@ -117,46 +128,61 @@ class GalaxyScene {
 
         geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
         geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
-        geometry.setAttribute('scale', new THREE.BufferAttribute(scales, 1));
+        geometry.setAttribute('aScale', new THREE.BufferAttribute(scales, 1));
+        geometry.setAttribute('aRandomness', new THREE.BufferAttribute(randomness, 3));
 
-        // Material
+        // Material with shaders
+        // Vertex shader: from src/shaders/vertex.glsl (inline for CDN compatibility)
+        // Fragment shader: from src/shaders/fragment.glsl (inline for CDN compatibility)
         const material = new THREE.ShaderMaterial({
             depthWrite: false,
             blending: THREE.AdditiveBlending,
             vertexColors: true,
             vertexShader: `
+                // Source: src/shaders/vertex.glsl
                 uniform float uTime;
                 uniform float uSize;
-                attribute float scale;
-                
-                void main() {
+
+                attribute float aScale;
+                attribute vec3 aRandomness;
+
+                varying vec3 vColor;
+
+                void main() 
+                {
                     vec4 modelPosition = modelMatrix * vec4(position, 1.0);
-                    
-                    // Rotation animation
+
                     float angle = atan(modelPosition.x, modelPosition.z);
                     float distanceToCenter = length(modelPosition.xz);
                     float angleOffset = (1.0 / distanceToCenter) * uTime * 0.2;
                     angle += angleOffset;
                     modelPosition.x = cos(angle) * distanceToCenter;
                     modelPosition.z = sin(angle) * distanceToCenter;
-                    
+
+                    modelPosition.xyz += aRandomness;
+
                     vec4 viewPosition = viewMatrix * modelPosition;
                     vec4 projectedPosition = projectionMatrix * viewPosition;
                     gl_Position = projectedPosition;
-                    
-                    // Size
-                    gl_PointSize = uSize * scale;
+
+                    gl_PointSize = uSize * aScale;
                     gl_PointSize *= (1.0 / -viewPosition.z);
+
+                    vColor = color;
                 }
             `,
             fragmentShader: `
-                void main() {
-                    // Disc pattern
+                // Source: src/shaders/fragment.glsl
+                varying vec3 vColor;
+
+                void main() 
+                {
                     float strength = distance(gl_PointCoord, vec2(0.5));
                     strength = 1.0 - strength;
                     strength = pow(strength, 10.0);
-                    
-                    vec3 color = mix(vec3(0.0), vec3(1.0), strength);
+
+                    vec3 color = mix(vec3(0.0), vColor, strength);
+
                     gl_FragColor = vec4(color, 1.0);
                 }
             `,
