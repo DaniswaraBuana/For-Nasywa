@@ -1120,6 +1120,16 @@ video::-webkit-media-controls-volume-slider {
   perspective-origin: 50% 50%;
 }
 
+/* Particles.js container */
+#particles-js {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+
 /* Volumetric Fog Effect */
 .galaxy-container::before {
   content: '';
@@ -1131,6 +1141,7 @@ video::-webkit-media-controls-volume-slider {
     radial-gradient(circle at 70% 60%, rgba(100, 149, 237, 0.04) 0%, transparent 50%);
   animation: volumetricFog 20s ease-in-out infinite alternate;
   pointer-events: none;
+  z-index: 2;
 }
 
 @keyframes volumetricFog {
@@ -1256,6 +1267,20 @@ video::-webkit-media-controls-volume-slider {
   z-index: 10;
   filter: brightness(1.3) contrast(1.1);
   transform-style: preserve-3d;
+}
+
+/* Animated sun core */
+.sun-core {
+  position: absolute;
+  inset: 20px;
+  background: radial-gradient(circle at 40% 40%, rgba(255, 255, 255, 0.8) 0%, transparent 60%);
+  border-radius: 50%;
+  animation: coreRotate 10s linear infinite;
+}
+
+@keyframes coreRotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
 /* Corona effect */
@@ -1465,6 +1490,35 @@ video::-webkit-media-controls-volume-slider {
   animation: volumetricGlow 4s ease-in-out infinite;
   pointer-events: none;
   z-index: -1;
+}
+
+/* Planet glow ring effect */
+.planet-glow {
+  position: absolute;
+  inset: -30px;
+  border-radius: 20px;
+  background: radial-gradient(
+    circle at 50% 50%,
+    rgba(135, 206, 250, 0.2) 0%,
+    rgba(100, 149, 237, 0.15) 30%,
+    rgba(65, 105, 225, 0.1) 50%,
+    transparent 70%
+  );
+  filter: blur(25px);
+  animation: planetGlowPulse 3s ease-in-out infinite;
+  pointer-events: none;
+  z-index: -2;
+}
+
+@keyframes planetGlowPulse {
+  0%, 100% {
+    transform: scale(0.9);
+    opacity: 0.4;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.7;
+  }
 }
 
 @keyframes volumetricGlow {
