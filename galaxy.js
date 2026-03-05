@@ -1,11 +1,6 @@
 // Three.js Galaxy Animation
 // Based on https://github.com/sboez/Galaxy (MIT License)
-// 
-// Integration Notes:
-// - Shaders copied from src/shaders/vertex.glsl and src/shaders/fragment.glsl
-// - Original uses webpack + imports, this version uses inline shaders for CDN compatibility
-// - Original files in src/ folder are reference only (not used in build)
-// - All galaxy logic consolidated in this file for simplicity
+// Adapted for CDN usage without webpack/bundler
 
 class GalaxyScene {
     constructor() {
@@ -13,18 +8,21 @@ class GalaxyScene {
         this.scene = null;
         this.camera = null;
         this.renderer = null;
-        this.galaxy = null;
+        this.points = null;
+        this.geometry = null;
+        this.material = null;
         this.clock = new THREE.Clock();
         this.isInitialized = false;
         
+        // Galaxy parameters (from src/scripts/Galaxy.js)
         this.parameters = {
-            count: 30000,
-            size: 0.015,
+            count: 100000,
+            size: 0.01,
             radius: 5,
-            branches: 5,
+            branches: 3,
             spin: 1,
-            randomness: 0.3,
-            randomnessPower: 4,
+            randomness: 0.2,
+            randomnessPower: 3,
             insideColor: '#ff6030',
             outsideColor: '#1b3984'
         };
@@ -47,7 +45,6 @@ class GalaxyScene {
         
         this.isInitialized = true;
         
-        // Handle window resize
         window.addEventListener('resize', () => this.onWindowResize(), false);
     }
 
@@ -62,8 +59,9 @@ class GalaxyScene {
             0.1,
             100
         );
-        this.camera.position.set(3, 3, 3);
-        this.scene.add(this.camera);
+        this.camera.position.x = 3;
+        this.camera.position.y = 3;
+        this.camera.position.z = 3;
     }
 
     setupRenderer() {
@@ -77,15 +75,16 @@ class GalaxyScene {
     }
 
     generateGalaxy() {
-        // Dispose old galaxy if exists
-        if (this.galaxy !== null) {
-            this.galaxy.geometry.dispose();
-            this.galaxy.material.dispose();
-            this.scene.remove(this.galaxy);
+        // Remove old galaxy if exists
+        if (this.points !== null) {
+            this.geometry.dispose();
+            this.material.dispose();
+            this.scene.remove(this.points);
         }
 
         // Geometry
-        const geometry = new THREE.BufferGeometry();
+        this.geometry = new THREE.BufferGeometry();
+
         const positions = new Float32Array(this.parameters.count * 3);
         const colors = new Float32Array(this.parameters.count * 3);
         const scales = new Float32Array(this.parameters.count);
@@ -102,6 +101,7 @@ class GalaxyScene {
             const spinAngle = radius * this.parameters.spin;
             const branchAngle = (i % this.parameters.branches) / this.parameters.branches * Math.PI * 2;
 
+            // Randomness
             const randomX = Math.pow(Math.random(), this.parameters.randomnessPower) * (Math.random() < 0.5 ? 1 : -1) * this.parameters.randomness * radius;
             const randomY = Math.pow(Math.random(), this.parameters.randomnessPower) * (Math.random() < 0.5 ? 1 : -1) * this.parameters.randomness * radius;
             const randomZ = Math.pow(Math.random(), this.parameters.randomnessPower) * (Math.random() < 0.5 ? 1 : -1) * this.parameters.randomness * radius;
@@ -126,20 +126,17 @@ class GalaxyScene {
             scales[i] = Math.random();
         }
 
-        geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-        geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
-        geometry.setAttribute('aScale', new THREE.BufferAttribute(scales, 1));
-        geometry.setAttribute('aRandomness', new THREE.BufferAttribute(randomness, 3));
+        this.geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+        this.geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+        this.geometry.setAttribute('aScale', new THREE.BufferAttribute(scales, 1));
+        this.geometry.setAttribute('aRandomness', new THREE.BufferAttribute(randomness, 3));
 
-        // Material with shaders
-        // Vertex shader: from src/shaders/vertex.glsl (inline for CDN compatibility)
-        // Fragment shader: from src/shaders/fragment.glsl (inline for CDN compatibility)
-        const material = new THREE.ShaderMaterial({
+        // Material with shaders (from src/shaders/vertex.glsl and fragment.glsl)
+        this.material = new THREE.ShaderMaterial({
             depthWrite: false,
             blending: THREE.AdditiveBlending,
             vertexColors: true,
             vertexShader: `
-                // Source: src/shaders/vertex.glsl
                 uniform float uTime;
                 uniform float uSize;
 
@@ -172,7 +169,6 @@ class GalaxyScene {
                 }
             `,
             fragmentShader: `
-                // Source: src/shaders/fragment.glsl
                 varying vec3 vColor;
 
                 void main() 
@@ -193,8 +189,8 @@ class GalaxyScene {
         });
 
         // Points
-        this.galaxy = new THREE.Points(geometry, material);
-        this.scene.add(this.galaxy);
+        this.points = new THREE.Points(this.geometry, this.material);
+        this.scene.add(this.points);
     }
 
     animate() {
@@ -202,15 +198,14 @@ class GalaxyScene {
         
         const elapsedTime = this.clock.getElapsedTime();
 
-        // Update galaxy rotation
-        if (this.galaxy && this.galaxy.material.uniforms) {
-            this.galaxy.material.uniforms.uTime.value = elapsedTime;
+        // Update material time uniform
+        if (this.material && this.material.uniforms) {
+            this.material.uniforms.uTime.value = elapsedTime;
         }
 
-        // Camera rotation around galaxy
-        this.camera.position.x = Math.sin(elapsedTime * 0.1) * 4;
-        this.camera.position.z = Math.cos(elapsedTime * 0.1) * 4;
-        this.camera.position.y = Math.sin(elapsedTime * 0.05) * 2 + 2;
+        // Rotate camera around galaxy
+        this.camera.position.x = Math.sin(elapsedTime * 0.05) * 5;
+        this.camera.position.z = Math.cos(elapsedTime * 0.05) * 5;
         this.camera.lookAt(0, 0, 0);
 
         // Render
@@ -230,10 +225,10 @@ class GalaxyScene {
     }
 
     destroy() {
-        if (this.galaxy) {
-            this.galaxy.geometry.dispose();
-            this.galaxy.material.dispose();
-            this.scene.remove(this.galaxy);
+        if (this.points) {
+            this.geometry.dispose();
+            this.material.dispose();
+            this.scene.remove(this.points);
         }
         this.isInitialized = false;
     }
