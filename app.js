@@ -434,7 +434,10 @@ function goToPage(pageNum) {
     
     // Initialize galaxy particles if entering page 7
     if (currentPage === 7) {
-        initGalaxyParticles();
+        // Use Three.js galaxy instead of particles.js
+        if (typeof initGalaxy === 'function') {
+            initGalaxy();
+        }
     }
     
     // Update UI
@@ -454,106 +457,6 @@ function updateUI() {
     dots.forEach(dot => {
         const page = parseInt(dot.dataset.page);
         dot.classList.toggle('active', page === currentPage);
-    });
-}
-
-// Initialize galaxy particle animation
-function initGalaxyParticles() {
-    if (typeof particlesJS === 'undefined') {
-        console.error('Particles.js library not loaded');
-        return;
-    }
-    
-    particlesJS('particles-js', {
-        particles: {
-            number: {
-                value: 180,
-                density: {
-                    enable: true,
-                    value_area: 800
-                }
-            },
-            color: {
-                value: ['#ffffff', '#87CEEB', '#B0E0E6', '#ADD8E6']
-            },
-            shape: {
-                type: 'circle',
-                stroke: {
-                    width: 0,
-                    color: '#000000'
-                }
-            },
-            opacity: {
-                value: 0.6,
-                random: true,
-                anim: {
-                    enable: true,
-                    speed: 1,
-                    opacity_min: 0.2,
-                    sync: false
-                }
-            },
-            size: {
-                value: 2,
-                random: true,
-                anim: {
-                    enable: true,
-                    speed: 2,
-                    size_min: 0.5,
-                    sync: false
-                }
-            },
-            line_linked: {
-                enable: true,
-                distance: 150,
-                color: '#87CEEB',
-                opacity: 0.3,
-                width: 1
-            },
-            move: {
-                enable: true,
-                speed: 0.8,
-                direction: 'none',
-                random: true,
-                straight: false,
-                out_mode: 'out',
-                bounce: false,
-                attract: {
-                    enable: false,
-                    rotateX: 600,
-                    rotateY: 1200
-                }
-            }
-        },
-        interactivity: {
-            detect_on: 'canvas',
-            events: {
-                onhover: {
-                    enable: true,
-                    mode: 'grab'
-                },
-                onclick: {
-                    enable: true,
-                    mode: 'push'
-                },
-                resize: true
-            },
-            modes: {
-                grab: {
-                    distance: 140,
-                    line_linked: {
-                        opacity: 0.5
-                    }
-                },
-                push: {
-                    particles_nb: 4
-                },
-                remove: {
-                    particles_nb: 2
-                }
-            }
-        },
-        retina_detect: true
     });
 }
 

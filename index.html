@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
-    <!-- Particles.js for galaxy effects -->
-    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <!-- Three.js for 3D galaxy -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/build/three.min.js"></script>
     <title>For Nasywa</title>
 </head>
 <body>
@@ -131,43 +131,39 @@
     </div>
 
     <div class="page" id="page7">
-        <!-- Galaxy Animation Page with Orbiting Photos -->
+        <!-- Galaxy Animation Page with Three.js -->
         <div class="galaxy-container">
-            <!-- Particles.js animated background -->
-            <div id="particles-js"></div>
-            <h2 class="galaxy-title">Our Galaxy of Memories</h2>
+            <canvas class="webgl-galaxy"></canvas>
+            <h2 class="galaxy-title">Our Galaxy of Memories ✨</h2>
             
-            <!-- Sun (Center) -->
-            <div class="sun">
-                <div class="sun-core"></div>
-            </div>
-            
-            <!-- Orbiting Planets with Photos -->
-            <div class="orbit orbit-1">
-                <div class="planet planet-1">
-                    <img src="assets/photos/photo1.jpg" alt="Memory 1">
-                    <div class="planet-glow"></div>
+            <!-- Orbiting Photo Frames (overlay on 3D galaxy) -->
+            <div class="photo-orbits">
+                <div class="orbit orbit-1">
+                    <div class="planet planet-1">
+                        <img src="assets/photos/photo1.jpg" alt="Memory 1">
+                        <div class="planet-glow"></div>
+                    </div>
                 </div>
-            </div>
-            
-            <div class="orbit orbit-2">
-                <div class="planet planet-2">
-                    <img src="assets/photos/photo2.jpg" alt="Memory 2">
-                    <div class="planet-glow"></div>
+                
+                <div class="orbit orbit-2">
+                    <div class="planet planet-2">
+                        <img src="assets/photos/photo2.jpg" alt="Memory 2">
+                        <div class="planet-glow"></div>
+                    </div>
                 </div>
-            </div>
-            
-            <div class="orbit orbit-3">
-                <div class="planet planet-3">
-                    <img src="assets/photos/photo3.jpg" alt="Memory 3">
-                    <div class="planet-glow"></div>
+                
+                <div class="orbit orbit-3">
+                    <div class="planet planet-3">
+                        <img src="assets/photos/photo3.jpg" alt="Memory 3">
+                        <div class="planet-glow"></div>
+                    </div>
                 </div>
-            </div>
-            
-            <div class="orbit orbit-4">
-                <div class="planet planet-4">
-                    <img src="assets/photos/photo4.jpg" alt="Memory 4">
-                    <div class="planet-glow"></div>
+                
+                <div class="orbit orbit-4">
+                    <div class="planet planet-4">
+                        <img src="assets/photos/photo4.jpg" alt="Memory 4">
+                        <div class="planet-glow"></div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -195,6 +191,8 @@
         <button class="nav-btn" id="nextBtn">Next →</button>
     </div>
 
+    <script src="galaxy.js"></script>
     <script src="app.js"></script>
 </body>
 </html>
+
