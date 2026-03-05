@@ -1153,11 +1153,10 @@ video::-webkit-media-controls-volume-slider {
 /* Photo orbits container - overlay on 3D galaxy */
 .photo-orbits {
   position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   z-index: 10;
   pointer-events: none;
 }
@@ -1209,7 +1208,6 @@ video::-webkit-media-controls-volume-slider {
 
 /* ─── Planet / Photo Frames ─── */
 .planet {
-  position: absolute;
   width: 140px;
   height: 140px;
   border-radius: 14px;
@@ -1269,55 +1267,166 @@ video::-webkit-media-controls-volume-slider {
   50%       { opacity: 0.8; transform: scale(1.1); }
 }
 
-/* ─── Photo positions: each planet floats at a corner of the galaxy view ─── */
-.planet-1 {
-  top: 18%;
-  left: 12%;
-  animation: floatPlanet1 8s ease-in-out infinite;
-}
-.planet-2 {
-  top: 18%;
-  right: 12%;
-  animation: floatPlanet2 9s ease-in-out infinite 1s;
-}
-.planet-3 {
-  bottom: 18%;
-  left: 12%;
-  animation: floatPlanet3 10s ease-in-out infinite 0.5s;
-}
-.planet-4 {
-  bottom: 18%;
-  right: 12%;
-  animation: floatPlanet4 8.5s ease-in-out infinite 1.5s;
+/* ─── Central Star ─── */
+.center-star {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 20;
+  pointer-events: none;
 }
 
-@keyframes floatPlanet1 {
-  0%, 100% { transform: translateY(0)   translateX(0); }
-  33%       { transform: translateY(-14px) translateX(6px); }
-  66%       { transform: translateY(8px)  translateX(-4px); }
+.center-star-core {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #ffffff 0%, #fffde4 40%, #ffd97a 70%, transparent 100%);
+  box-shadow:
+    0 0  8px 4px rgba(255, 255, 255, 1),
+    0 0 20px 8px rgba(255, 245, 150, 0.9),
+    0 0 45px 16px rgba(255, 210, 80, 0.7),
+    0 0 90px 30px rgba(255, 180, 30, 0.4);
+  animation: corePulse 2.4s ease-in-out infinite;
+  margin: auto;
 }
-@keyframes floatPlanet2 {
-  0%, 100% { transform: translateY(0)   translateX(0); }
-  33%       { transform: translateY(10px) translateX(-8px); }
-  66%       { transform: translateY(-12px) translateX(5px); }
+
+.center-star-rays {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(0deg);
+  width: 80px;
+  height: 80px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 80'%3E%3Cg stroke='%23fffde4' stroke-width='1.5' opacity='0.7'%3E%3Cline x1='40' y1='2' x2='40' y2='20'/%3E%3Cline x1='40' y1='60' x2='40' y2='78'/%3E%3Cline x1='2' y1='40' x2='20' y2='40'/%3E%3Cline x1='60' y1='40' x2='78' y2='40'/%3E%3Cline x1='12' y1='12' x2='24' y2='24'/%3E%3Cline x1='56' y1='56' x2='68' y2='68'/%3E%3Cline x1='68' y1='12' x2='56' y2='24'/%3E%3Cline x1='24' y1='56' x2='12' y2='68'/%3E%3C/g%3E%3C/svg%3E") center/contain no-repeat;
+  animation: raysRotate 8s linear infinite;
+  pointer-events: none;
 }
-@keyframes floatPlanet3 {
-  0%, 100% { transform: translateY(0)   translateX(0); }
-  33%       { transform: translateY(-10px) translateX(7px); }
-  66%       { transform: translateY(12px) translateX(-6px); }
+
+.center-star-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 240, 120, 0.25) 0%, rgba(255, 200, 50, 0.1) 40%, transparent 70%);
+  filter: blur(12px);
+  animation: glowBreath 3s ease-in-out infinite;
+  pointer-events: none;
 }
-@keyframes floatPlanet4 {
-  0%, 100% { transform: translateY(0)   translateX(0); }
-  33%       { transform: translateY(13px) translateX(-5px); }
-  66%       { transform: translateY(-9px) translateX(8px); }
+
+@keyframes corePulse {
+  0%, 100% { transform: scale(1);    box-shadow: 0 0 8px 4px #fff, 0 0 20px 8px rgba(255,245,150,.9), 0 0 45px 16px rgba(255,210,80,.7), 0 0 90px 30px rgba(255,180,30,.4); }
+  50%       { transform: scale(1.18); box-shadow: 0 0 12px 6px #fff, 0 0 30px 12px rgba(255,245,150,1),  0 0 65px 22px rgba(255,210,80,.9), 0 0 130px 45px rgba(255,180,30,.6); }
+}
+@keyframes raysRotate {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to   { transform: translate(-50%, -50%) rotate(360deg); }
+}
+@keyframes glowBreath {
+  0%, 100% { opacity: 0.6; transform: translate(-50%, -50%) scale(1); }
+  50%       { opacity: 1;   transform: translate(-50%, -50%) scale(1.2); }
+}
+
+/* ─── Orbit Rings (invisible, just for rotation) ─── */
+.orbit-ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  border-radius: 50%;
+  pointer-events: none;
+  /* center the ring on origin */
+  transform-origin: 0 0;
+}
+
+.orbit-ring-1 {
+  width: 460px;
+  height: 460px;
+  margin-top: -230px;
+  margin-left: -230px;
+  animation: orbitCW 18s linear infinite;
+}
+.orbit-ring-2 {
+  width: 360px;
+  height: 360px;
+  margin-top: -180px;
+  margin-left: -180px;
+  animation: orbitCCW 14s linear infinite;
+}
+.orbit-ring-3 {
+  width: 560px;
+  height: 560px;
+  margin-top: -280px;
+  margin-left: -280px;
+  animation: orbitCW 24s linear infinite;
+}
+.orbit-ring-4 {
+  width: 300px;
+  height: 300px;
+  margin-top: -150px;
+  margin-left: -150px;
+  animation: orbitCCW 10s linear infinite 2s;
+}
+
+@keyframes orbitCW {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+@keyframes orbitCCW {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(-360deg); }
+}
+
+/* Planet sits at the top of its orbit ring, counter-rotated to stay upright */
+.orbit-ring-1 .planet {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(0deg);
+  animation: counterCW 18s linear infinite;
+}
+.orbit-ring-2 .planet {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation: counterCCW 14s linear infinite;
+}
+.orbit-ring-3 .planet {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation: counterCW 24s linear infinite;
+}
+.orbit-ring-4 .planet {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation: counterCCW 10s linear infinite 2s;
+}
+
+@keyframes counterCW  {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to   { transform: translate(-50%, -50%) rotate(-360deg); }
+}
+@keyframes counterCCW {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to   { transform: translate(-50%, -50%) rotate(360deg); }
 }
 
 /* ─── Responsive ─── */
 @media (max-width: 768px) {
-  .planet { width: 100px; height: 100px; }
-  .planet-1 { top: 14%; left: 6%; }
-  .planet-2 { top: 14%; right: 6%; }
-  .planet-3 { bottom: 14%; left: 6%; }
-  .planet-4 { bottom: 14%; right: 6%; }
+  .planet { width: 80px; height: 80px; }
+  .orbit-ring-1 { width: 280px; height: 280px; margin-top: -140px; margin-left: -140px; }
+  .orbit-ring-2 { width: 210px; height: 210px; margin-top: -105px; margin-left: -105px; }
+  .orbit-ring-3 { width: 340px; height: 340px; margin-top: -170px; margin-left: -170px; }
+  .orbit-ring-4 { width: 170px; height: 170px; margin-top: -85px;  margin-left: -85px; }
   .galaxy-title { top: 38px; font-size: clamp(1.4rem, 5vw, 2rem); }
+  .center-star-core { width: 20px; height: 20px; }
+  .center-star-rays { width: 56px; height: 56px; }
+  .center-star-glow { width: 110px; height: 110px; }
 }
